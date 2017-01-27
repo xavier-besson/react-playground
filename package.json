@@ -1,7 +1,7 @@
 {
   "name": "React-Playground",
   "version": "0.1.0",
-  "main": "src/index.js",
+  "main": "index.html",
   "scripts": {
     "bundle": "node ./node_modules/webpack/bin/webpack.js",
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --colors --hot --inline --history-api-fallback & open http://localhost:8887/",
