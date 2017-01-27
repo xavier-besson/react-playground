@@ -55,8 +55,16 @@ class RouterManager {
 	 */
 	setRouter(router) {
 		this.router = router;
-		
 		return this;
+	}
+	
+	/**
+	 * Return the current pathname
+	 * @method getCurrentPathName
+	 * @return {String} Current pathname
+	 */
+	getCurrentPathName() {
+		return this.router.getCurrentLocation().pathname;
 	}	
 }
 

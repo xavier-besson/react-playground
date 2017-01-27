@@ -11,6 +11,12 @@ class LayoutManager {
 	currentWindow = null;
 	
 	/**
+	 * List of loaded CSS files for an associate window
+	 * @type {Object}
+	 */
+	loadedCSSFiles = {};
+	
+	/**
 	 * The singleton instance
 	 * @type {Layout}
 	 */
@@ -103,14 +109,21 @@ class LayoutManager {
 		if(this.currentWindow !== null && files.length) {
 			const doc = this.currentWindow.document;
 			const head = doc.head;
+			let loadedFiles = this.loadedCSSFiles[this.currentWindow] || [];
 
 			files.forEach((file) => {
-				let link = doc.createElement('link');
-				link.type = 'text/css';
-				link.rel = 'stylesheet';
-				link.href = file;
-				head.appendChild(link);
+				if(loadedFiles.indexOf(file.href) === -1) {
+					let link = doc.createElement('link');
+					
+					link.type = 'text/css';
+					link.rel = 'stylesheet';
+					link.href = file.href;
+					head.appendChild(link);
+					loadedFiles.push(file.href);
+				}
 			});
+			
+			this.loadedCSSFiles[this.currentWindow] = loadedFiles;
 		}
 		
 		return this;

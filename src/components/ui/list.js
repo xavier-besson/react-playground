@@ -1,13 +1,20 @@
 import React from 'react';
 import Default from 'components/ui/default';
-import {Link as RouterLink} from 'react-router';
-import RouterManager from 'utils/router-manager';
 
 /**
- * @class Link
+ * Enumeration of available tyle for list component
+ * @type {Object}
+ */
+export const LIST_TYPE = {
+	default: 'ul',
+	ordered: 'ol',
+};
+
+/**
+ * @class List
  * @extends Default
  */
-class Link extends Default {
+class List extends Default {
 	
 	/**
 	 * Range of validators that can be used to make sure the data you receive is valid
@@ -15,7 +22,11 @@ class Link extends Default {
 	 */
 	static propTypes = {
 		...Default.propTypes,
-		to: React.PropTypes.string,
+		type: React.PropTypes.oneOf(Object.keys(LIST_TYPE)),
+		items: React.PropTypes.arrayOf(React.PropTypes.shape({
+			content: React.PropTypes.node,
+			props: React.PropTypes.object,
+		})),
 	}
 
 	/**
@@ -24,21 +35,8 @@ class Link extends Default {
 	 */
 	static defaultProps = {
 		...Default.defaultProps,
-		to: '',
-	}
-	
-	/**
-	 * Permit to check if we need a real link or a router link.
-	 * The test is done on the `to` property
-	 * @method isReal
-	 * @return {Boolean}  True if it's a real link, false if it's a router link
-	 */
-	isReal() {
-		const {
-			to,
-		} = this.props;
-		
-		return to.startsWith('//') || to.startsWith('http://') || to.startsWith('https://');
+		type: 'default',
+		items: [],
 	}
 	
 	/**
@@ -47,24 +45,20 @@ class Link extends Default {
 	 * This element can be either a representation of a native DOM component,
 	 * such as <div />, or another composite component that you've defined yourself.
 	 * You can also return null or false to indicate that you don't want anything rendered.
-	 * When returning null or false, ReactDOM.findDOMNode(this) will return null
-	 * @method renderRealLink
+	 * When returning null or false, ReactDOM.findDOMNode(this) will return null.
+	 * @method renderItem
+	 * @param {Object} item  The item object
+	 * @param {Number} index The index of the item
 	 * @return {Mixed}  A representation of a native DOM component
 	 */
-	renderRealLink() {
-		const {
-			children,
-			to,
-			...other
-		} = this.props;
-		
+	renderItem(item, index = 0) {
 		return (
-			<a
-				href={to}
-				{...other}
+			<li
+				key={index}
+				{...(item.props || {})}
 			>
-				{children}
-			</a>
+				{item.content}
+			</li>
 		);
 	}
 	
@@ -75,24 +69,11 @@ class Link extends Default {
 	 * such as <div />, or another composite component that you've defined yourself.
 	 * You can also return null or false to indicate that you don't want anything rendered.
 	 * When returning null or false, ReactDOM.findDOMNode(this) will return null.
-	 * @method renderRouterLink
+	 * @method renderItems
 	 * @return {Mixed}  A representation of a native DOM component
 	 */
-	renderRouterLink() {
-		const {
-			children,
-			to,
-			...other
-		} = this.props;
-		
-		return (
-			<RouterLink
-				to={to}
-				{...other}
-			>
-				{children}
-			</RouterLink>
-		);
+	renderItems() {
+		return this.props.items.map(this.renderItem);
 	}
 	
 	/**
@@ -107,11 +88,14 @@ class Link extends Default {
 	 */
 	render() {
 		const {
-			to,
+			children, // eslint-disable-line
+			items, // eslint-disable-line
+			type,
+			...other
 		} = this.props;
 		
-		return this.isReal() ? this.renderRealLink() : this.renderRouterLink();
+		return React.createElement(LIST_TYPE[type], other, this.renderItems());
 	}
 }
 
-export default Link;
+export default List;

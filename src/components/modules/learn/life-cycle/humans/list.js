@@ -1,28 +1,28 @@
-import React, {PropTypes} from 'react';
-import Pure from 'components/pure';
-import Link from 'components/ui/link';
-import RouterManager from 'utils/router-manager';
+import React from 'react';
+import LearnLifeCycleHumansItem from './item';
 
 /**
- * @class LayoutNav
- * @extends Default
+ * @class LearnLifeCycleHumansList
+ * @extends React.Component
  */
-class LayoutNav extends Pure {
+class LearnLifeCycleHumansList extends React.Component {
 	
 	/**
 	 * Range of validators that can be used to make sure the data you receive is valid
 	 * @type {Object}
 	 */
 	static propTypes = {
-		items: PropTypes.array,
+		humans: React.PropTypes.array,
+		addLog: React.PropTypes.func.isRequired,
+		onKill: React.PropTypes.func.isRequired,
 	}
-
+	
 	/**
 	 * Default values for props property
 	 * @type {Object}
 	 */
 	static defaultProps = {
-		items: [],
+		humans: [],
 	}
 	
 	/**
@@ -32,33 +32,24 @@ class LayoutNav extends Pure {
 	 * such as <div />, or another composite component that you've defined yourself.
 	 * You can also return null or false to indicate that you don't want anything rendered.
 	 * When returning null or false, ReactDOM.findDOMNode(this) will return null.
-	 * @method renderItems
+	 * @method renderHuman
+	 * @param {Object} props Human properties
+	 * @param {Number} index Index of the human
 	 * @return {Mixed}  A representation of a native DOM component
 	 */
-	renderItems() {
-		const {
-			items,
-		} = this.props;
-				
-		return items.map((item, index) => {
-			const currentPathName = RouterManager.getInstance().getCurrentPathName();
-			const className = (currentPathName === item.path || currentPathName.startsWith(`${item.path}/`)) ? 'active': '';
-			
-			return (
-				<li
-					key={index}
-				>
-					<Link
-						to={item.path}
-						className={className}
-					>
-						{item.key}
-					</Link>
-				</li>
-			);
-		});
+	renderHuman(props, index) {
+		return (
+			<LearnLifeCycleHumansItem
+				{...props}
+				key={index}
+				addLog={this.props.addLog}
+				onKill={this.props.onKill}
+				id={index}
+				friendsNumber={this.props.humans.length - 1}
+			/>
+		);
 	}
-	
+		
 	/**
 	 * React method.
 	 * Return a single React element.
@@ -70,14 +61,13 @@ class LayoutNav extends Pure {
 	 * @return {Mixed}  A representation of a native DOM component
 	 */
 	render() {
+		console.log('RENDER HUMAN LIST');
 		return (
-			<nav id="nav">
-				<ul>
-					{this.renderItems()}
-				</ul>
-			</nav>
+			<div>
+				{this.props.humans.map(::this.renderHuman)}
+			</div>
 		);
 	}
 }
 
-export default LayoutNav;
+export default LearnLifeCycleHumansList;

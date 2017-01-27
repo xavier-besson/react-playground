@@ -2,21 +2,37 @@ import React from 'react';
 import Page from 'components/page';
 import Section from 'components/ui/section';
 import Title from 'components/ui/title';
+import Link from 'components/ui/link';
+import List from 'components/ui/list';
+import Text from 'components/ui/text';
 
 /**
- * @class UixSortablePage
+ * @class LearnDashboardPage
  * @extends Page
  */
-class UixSortablePage extends Page {
+class LearnDashboardPage extends Page {
 	
 	/**
 	 * Meta properties that will be injected in the page
 	 * @type {Object}
 	 */
 	meta = {
-		title: 'React Playground - UI/UX - Sortable',
-		description: 'Let\'s play with React',
+		title: 'React Playground - Learn',
+		description: 'Let\'s learn React',
 	};
+	
+	/**
+	 * List of available sub pages
+	 * @type {Array}
+	 */
+	subPagesListItems = [
+		{
+			content: (<Link to="/learn/life-cycle">Life cycle</Link>),
+		},
+		{
+			content: '...others will come',
+		},
+	];
 	
 	/**
 	 * Sub rendering method called by the render method.
@@ -31,10 +47,16 @@ class UixSortablePage extends Page {
 	renderContent() {
 		return (
 			<Section>
-				<Title>UIX/Sortable</Title>
+				<Title>Learn</Title>
+				<Text>
+					Choose what you want to learn about React in the list above:
+				</Text>
+				<List
+					items={this.subPagesListItems}
+				/>
 			</Section>
 		);
 	}
 }
 
-export default UixSortablePage;
+export default LearnDashboardPage;

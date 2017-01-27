@@ -1,5 +1,3 @@
-const emptyReducer = (state = {}, action) => {
-	return state;
-}
+const emptyReducer = (state = {}, action) => state;
 
-export default emptyReducer
+export default emptyReducer;

@@ -2,20 +2,23 @@ import React from 'react';
 import Page from 'components/page';
 import Section from 'components/ui/section';
 import Title from 'components/ui/title';
+import Link from 'components/ui/link';
+import Text from 'components/ui/text';
+import ModulesLearnLifeCycle from 'components/modules/learn/life-cycle';
 
 /**
- * @class UixSortablePage
+ * @class LearnLifeCyclePage
  * @extends Page
  */
-class UixSortablePage extends Page {
+class LearnLifeCyclePage extends Page {
 	
 	/**
 	 * Meta properties that will be injected in the page
 	 * @type {Object}
 	 */
 	meta = {
-		title: 'React Playground - UI/UX - Sortable',
-		description: 'Let\'s play with React',
+		title: 'React Playground - Learn / Life cylce',
+		description: 'Let\'s learn React. How is working the component\'s life cycle ',
 	};
 	
 	/**
@@ -31,10 +34,19 @@ class UixSortablePage extends Page {
 	renderContent() {
 		return (
 			<Section>
-				<Title>UIX/Sortable</Title>
+				<Text>
+					<Link to="">&lt; Go back to the Learn dashboard</Link>
+				</Text>
+				<Title>Learn / Life cycle</Title>
+				<Text>
+					The example above is about the life cycle of React:
+					<br />
+					How components are created and updated?
+				</Text>
+				<ModulesLearnLifeCycle />
 			</Section>
 		);
 	}
 }
 
-export default UixSortablePage;
+export default LearnLifeCyclePage;

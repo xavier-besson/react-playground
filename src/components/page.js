@@ -1,16 +1,25 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import LayoutManager from 'utils/layout-manager';
 import RouterManager from 'utils/router-manager';
 import LayoutHeader from 'components/layout/header';
 import LayoutNav from 'components/layout/nav';
 import LayoutFooter from 'components/layout/footer';
+import navConfig from 'config/nav/default.js';
 
 /**
- * Class Page
+ * @class Page
  * @extends React.Component
- */ 
+ */
 class Page extends React.Component {
+	
+	/**
+	 * Range of validators that can be used to make sure the data you receive is valid
+	 * @type {Object}
+	 */
+	static propTypes = {
+		router: React.PropTypes.object.isRequired,
+	}
 	
 	/**
 	 * Instance of the RouterManager
@@ -40,16 +49,18 @@ class Page extends React.Component {
 	 * @type {Array}
 	 */
 	cssFiles = [
-		'assets/css/main.css'
+		{
+			href: '/assets/css/main.css',
+		},
 	];
 	
 	/**
 	 * React method.
-	 * Invoked immediately before mounting occurs. 
-	 * It is called before render(), therefore setting state in this method will not trigger a re-rendering. 
+	 * Invoked immediately before mounting occurs.
+	 * It is called before render(), therefore setting state in this method will not trigger a re-rendering.
 	 * Avoid introducing any side-effects or subscriptions in this method.
 	 * @method componentWillMount
-	 * @return {void}	 
+	 * @return {void}
 	 */
 	componentWillMount() {
 		this.routerManager = RouterManager.forge(this.props.router);
@@ -57,12 +68,12 @@ class Page extends React.Component {
 	
 	/**
 	 * React method.
-	 * Invoked immediately after a component is mounted. 
-	 * Initialization that requires DOM nodes should go here. 
-	 * If you need to load data from a remote endpoint, this is a good place to instantiate the network request. 
+	 * Invoked immediately after a component is mounted.
+	 * Initialization that requires DOM nodes should go here.
+	 * If you need to load data from a remote endpoint, this is a good place to instantiate the network request.
 	 * Setting state in this method will trigger a re-rendering.
 	 * @method componentDidMount
-	 * @return {void}	 
+	 * @return {void}
 	 */
 	componentDidMount() {
 		this.initLayout();
@@ -71,8 +82,7 @@ class Page extends React.Component {
 	/**
 	 * Initialization of the layout
 	 * @method initLayout
-	 * @
-	 * return {void}
+	 * @return {void}
 	 */
 	initLayout() {
 		this.layoutManager = LayoutManager.forge(ReactDOM.findDOMNode(this.refs.root));
@@ -81,13 +91,13 @@ class Page extends React.Component {
 	
 	/**
 	 * Sub rendering method called by the render method.
-	 * Return a single React element. 
-	 * This element can be either a representation of a native DOM component, 
+	 * Return a single React element.
+	 * This element can be either a representation of a native DOM component,
 	 * such as <div />, or another composite component that you've defined yourself.
-	 * You can also return null or false to indicate that you don't want anything rendered. 
+	 * You can also return null or false to indicate that you don't want anything rendered.
 	 * When returning null or false, ReactDOM.findDOMNode(this) will return null.
 	 * @method renderHeader
-	 * @return {Mixed}  A representation of a native DOM component	 
+	 * @return {Mixed}  A representation of a native DOM component
 	 */
 	renderHeader() {
 		return (
@@ -97,29 +107,31 @@ class Page extends React.Component {
 	
 	/**
 	 * Sub rendering method called by the render method.
-	 * Return a single React element. 
-	 * This element can be either a representation of a native DOM component, 
+	 * Return a single React element.
+	 * This element can be either a representation of a native DOM component,
 	 * such as <div />, or another composite component that you've defined yourself.
-	 * You can also return null or false to indicate that you don't want anything rendered. 
+	 * You can also return null or false to indicate that you don't want anything rendered.
 	 * When returning null or false, ReactDOM.findDOMNode(this) will return null.
 	 * @method renderNav
-	 * @return {Mixed}  A representation of a native DOM component	 
+	 * @return {Mixed}  A representation of a native DOM component
 	 */
 	renderNav() {
 		return (
-			<LayoutNav></LayoutNav>
+			<LayoutNav
+				items={navConfig}
+			/>
 		);
 	}
 	
 	/**
 	 * Sub rendering method called by the render method.
-	 * Return a single React element. 
-	 * This element can be either a representation of a native DOM component, 
+	 * Return a single React element.
+	 * This element can be either a representation of a native DOM component,
 	 * such as <div />, or another composite component that you've defined yourself.
-	 * You can also return null or false to indicate that you don't want anything rendered. 
+	 * You can also return null or false to indicate that you don't want anything rendered.
 	 * When returning null or false, ReactDOM.findDOMNode(this) will return null.
 	 * @method renderHeader
-	 * @return {Mixed}  A representation of a native DOM component	 
+	 * @return {Mixed}  A representation of a native DOM component
 	 */
 	renderContent() {
 		return null;
@@ -127,13 +139,13 @@ class Page extends React.Component {
 	
 	/**
 	 * Sub rendering method called by the render method.
-	 * Return a single React element. 
-	 * This element can be either a representation of a native DOM component, 
+	 * Return a single React element.
+	 * This element can be either a representation of a native DOM component,
 	 * such as <div />, or another composite component that you've defined yourself.
-	 * You can also return null or false to indicate that you don't want anything rendered. 
+	 * You can also return null or false to indicate that you don't want anything rendered.
 	 * When returning null or false, ReactDOM.findDOMNode(this) will return null.
 	 * @method renderHeader
-	 * @return {Mixed}  A representation of a native DOM component	 
+	 * @return {Mixed}  A representation of a native DOM component
 	 */
 	renderFooter() {
 		return (
@@ -143,24 +155,26 @@ class Page extends React.Component {
 	
 	/**
 	 * React method.
-	 * Return a single React element. 
-	 * This element can be either a representation of a native DOM component, 
+	 * Return a single React element.
+	 * This element can be either a representation of a native DOM component,
 	 * such as <div />, or another composite component that you've defined yourself.
-	 * You can also return null or false to indicate that you don't want anything rendered. 
+	 * You can also return null or false to indicate that you don't want anything rendered.
 	 * When returning null or false, ReactDOM.findDOMNode(this) will return null.
 	 * @method render
-	 * @return {Mixed}  A representation of a native DOM component	 
+	 * @return {Mixed}  A representation of a native DOM component
 	 */
 	render() {
 		return (
-			<div 
+			<div
 				id="wrapper"
 				ref="root"
 			>
 				{this.renderHeader()}
 				{this.renderNav()}
 				<div id="main">
-					{this.renderContent()}
+					<section className="main">
+						{this.renderContent()}
+					</section>
 				</div>
 				{this.renderFooter()}
 			</div>

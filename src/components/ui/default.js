@@ -1,12 +1,32 @@
 import React from 'react';
+import Pure from 'components/pure';
 
 /**
- * Default UI component, all components have to extend this one.
- * @class Pure
- * @extends React.PureComponent
+ * @class Default
+ * @extends Pure
  */
-class Pure extends React.PureComponent {
-		
+class Default extends Pure {
+	
+	/**
+	 * Range of validators that can be used to make sure the data you receive is valid
+	 * @type {Object}
+	 */
+	static propTypes = {
+		...Pure.propTypes,
+		style: React.PropTypes.object,
+		className: React.PropTypes.string,
+	}
+
+	/**
+	 * Default values for props property
+	 * @type {Object}
+	 */
+	static defaultProps = {
+		...Pure.defaultProps,
+		style: {},
+		className: '',
+	}
+	
 	/**
 	 * React method.
 	 * Return a single React element.
@@ -22,4 +42,4 @@ class Pure extends React.PureComponent {
 	}
 }
 
-export default Pure;
+export default Default;

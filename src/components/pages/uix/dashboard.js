@@ -1,12 +1,13 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 import Page from 'components/page';
-import Link from 'components/ui/link';
+import Section from 'components/ui/section';
+import Title from 'components/ui/title';
 
 /**
- * Class UixDashboard
+ * @class UixDashboardPage
  * @extends Page
- */ 
-class UixDashboard extends Page {
+ */
+class UixDashboardPage extends Page {
 	
 	/**
 	 * Meta properties that will be injected in the page
@@ -19,21 +20,21 @@ class UixDashboard extends Page {
 	
 	/**
 	 * Sub rendering method called by the render method.
-	 * Return a single React element. 
-	 * This element can be either a representation of a native DOM component, 
+	 * Return a single React element.
+	 * This element can be either a representation of a native DOM component,
 	 * such as <div />, or another composite component that you've defined yourself.
-	 * You can also return null or false to indicate that you don't want anything rendered. 
+	 * You can also return null or false to indicate that you don't want anything rendered.
 	 * When returning null or false, ReactDOM.findDOMNode(this) will return null.
 	 * @method renderContent
-	 * @return {Mixed}  A representation of a native DOM component	 
+	 * @return {Mixed}  A representation of a native DOM component
 	 */
 	renderContent() {
 		return (
-			<div>
-				UIX/Dashboard
-			</div>
+			<Section>
+				<Title>UIX/Dashboard</Title>
+			</Section>
 		);
 	}
 }
 
-export default UixDashboard;
+export default UixDashboardPage;

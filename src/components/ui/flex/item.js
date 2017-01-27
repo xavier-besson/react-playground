@@ -1,11 +1,29 @@
 import React from 'react';
-import Pure from 'components/pure';
+import Default from 'components/ui/default';
 
 /**
- * @class LayoutFooter
+ * @class FlexItem
  * @extends Default
  */
-class LayoutFooter extends Pure {
+class FlexItem extends Default {
+	
+	/**
+	 * Range of validators that can be used to make sure the data you receive is valid
+	 * @type {Object}
+	 */
+	static propTypes = {
+		...Default.propTypes,
+		grow: React.PropTypes.number,
+	}
+
+	/**
+	 * Default values for props property
+	 * @type {Object}
+	 */
+	static defaultProps = {
+		...Default.defaultProps,
+		grow: 1,
+	}
 	
 	/**
 	 * React method.
@@ -20,29 +38,23 @@ class LayoutFooter extends Pure {
 	render() {
 		const {
 			children,
+			style,
+			grow,
+			...other
 		} = this.props;
 		
 		return (
-			<footer id="footer">
-				<section>
-					<h2>What is it?</h2>
-					<p>
-						A set of tests and proof of concept for React.
-					</p>
-				</section>
-				<section>
-					<h2>Contact</h2>
-					<dl className="alt">
-						<dt>Email</dt>
-						<dd><a href="#">besson.xavier<b>[at]</b>gmail<b>[dot]</b>com</a></dd>
-					</dl>
-				</section>
-				<p className="copyright">
-					Design: <a href="https://html5up.net">HTML5 UP</a>.
-				</p>
-			</footer>
+			<div
+				style={{
+					flexGrow: grow,
+					...style,
+				}}
+				{...other}
+			>
+				{children}
+			</div>
 		);
 	}
 }
 
-export default LayoutFooter;
+export default FlexItem;

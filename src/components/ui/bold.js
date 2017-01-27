@@ -1,11 +1,11 @@
 import React from 'react';
-import Pure from 'components/pure';
+import Default from 'components/ui/default';
 
 /**
- * @class LayoutFooter
+ * @class Bold
  * @extends Default
  */
-class LayoutFooter extends Pure {
+class Bold extends Default {
 	
 	/**
 	 * React method.
@@ -20,29 +20,22 @@ class LayoutFooter extends Pure {
 	render() {
 		const {
 			children,
+			style,
+			...other
 		} = this.props;
 		
 		return (
-			<footer id="footer">
-				<section>
-					<h2>What is it?</h2>
-					<p>
-						A set of tests and proof of concept for React.
-					</p>
-				</section>
-				<section>
-					<h2>Contact</h2>
-					<dl className="alt">
-						<dt>Email</dt>
-						<dd><a href="#">besson.xavier<b>[at]</b>gmail<b>[dot]</b>com</a></dd>
-					</dl>
-				</section>
-				<p className="copyright">
-					Design: <a href="https://html5up.net">HTML5 UP</a>.
-				</p>
-			</footer>
+			<span
+				style={{
+					fontWeight: 'bold',
+					...style,
+				}}
+				{...other}
+			>
+				{children}
+			</span>
 		);
 	}
 }
 
-export default LayoutFooter;
+export default Bold;
