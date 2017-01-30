@@ -1,5 +1,6 @@
 import React from 'react';
 import LearnLifeCycleHumansItem from './item';
+import Immutable from 'immutable';
 
 /**
  * @class LearnLifeCycleHumansList
@@ -12,9 +13,9 @@ class LearnLifeCycleHumansList extends React.Component {
 	 * @type {Object}
 	 */
 	static propTypes = {
-		humans: React.PropTypes.array,
+		humans: React.PropTypes.instanceOf(Immutable.List),
 		addLog: React.PropTypes.func.isRequired,
-		onKill: React.PropTypes.func.isRequired,
+		killHuman: React.PropTypes.func.isRequired,
 	}
 	
 	/**
@@ -22,7 +23,7 @@ class LearnLifeCycleHumansList extends React.Component {
 	 * @type {Object}
 	 */
 	static defaultProps = {
-		humans: [],
+		humans: Immutable.List(),
 	}
 	
 	/**
@@ -33,17 +34,17 @@ class LearnLifeCycleHumansList extends React.Component {
 	 * You can also return null or false to indicate that you don't want anything rendered.
 	 * When returning null or false, ReactDOM.findDOMNode(this) will return null.
 	 * @method renderHuman
-	 * @param {Object} props Human properties
+	 * @param {Object} human Human properties
 	 * @param {Number} index Index of the human
 	 * @return {Mixed}  A representation of a native DOM component
 	 */
-	renderHuman(props, index) {
+	renderHuman(human, index) {
 		return (
 			<LearnLifeCycleHumansItem
-				{...props}
+				{...human.toJS()}
 				key={index}
 				addLog={this.props.addLog}
-				onKill={this.props.onKill}
+				killHuman={this.props.killHuman}
 				id={index}
 				friendsNumber={this.props.humans.length - 1}
 			/>
@@ -61,7 +62,6 @@ class LearnLifeCycleHumansList extends React.Component {
 	 * @return {Mixed}  A representation of a native DOM component
 	 */
 	render() {
-		console.log('RENDER HUMAN LIST');
 		return (
 			<div>
 				{this.props.humans.map(::this.renderHuman)}

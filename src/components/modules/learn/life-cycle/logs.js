@@ -1,6 +1,7 @@
 import React from 'react';
 import CodeFormatted from 'components/ui/code-formatted';
 import Button from 'components/ui/button';
+import Immutable from 'immutable';
 
 /**
  * @class LearnLifeCycleLogs
@@ -13,8 +14,8 @@ class LearnLifeCycleLogs extends React.Component {
 	 * @type {Object}
 	 */
 	static propTypes = {
-		items: React.PropTypes.array.isRequired,
-		emptyLog: React.PropTypes.func.isRequired,
+		items: React.PropTypes.instanceOf(Immutable.List).isRequired,
+		emptyLogs: React.PropTypes.func.isRequired,
 	}
 	
 	/**
@@ -23,7 +24,7 @@ class LearnLifeCycleLogs extends React.Component {
 	 * @return {void}
 	 */
 	onEmptyClick(e) {
-		this.props.emptyLog();
+		this.props.emptyLogs();
 	}
 		
 	/**
@@ -47,7 +48,9 @@ class LearnLifeCycleLogs extends React.Component {
 			<div>
 				<Button
 					onClick={::this.onEmptyClick}
-				>Empty</Button>
+				>
+					Empty
+				</Button>
 				<CodeFormatted
 					style={{
 						marginTop: '2em',

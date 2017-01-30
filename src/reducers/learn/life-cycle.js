@@ -1,3 +1,5 @@
+import Immutable from 'immutable';
+
 const log = (state, action) => {
 	switch (action.type) {
 	case 'ADD_LOG':
@@ -7,14 +9,11 @@ const log = (state, action) => {
 	}
 };
 
-export const logs = (state = [], action) => {
+export const logs = (state = Immutable.List(), action) => {
 	switch (action.type) {
 	case 'ADD_LOG':
-		return [
-			...state,
-			log(null, action),
-		];
-	case 'EMPTY_LOG':
+		return state.push(log(null, action));
+	case 'EMPTY_LOGS':
 		return [];
 	default:
 		return state;
@@ -24,26 +23,19 @@ export const logs = (state = [], action) => {
 const human = (state, action) => {
 	switch (action.type) {
 	case 'ADD_HUMAN':
-		return Object.assign({}, action.props);
+		return action.props;
 	default:
 		return state;
 	}
 };
 
-export const humans = (state = [], action) => {
+export const humans = (state = Immutable.List(), action) => {
 	switch (action.type) {
 	case 'ADD_HUMAN': {
-		const newState = state.slice(0);
-		
-		newState.push(human(null, action));
-		return newState;
+		return state.push(human(null, action));
 	}
 	case 'KILL_HUMAN': {
-		const newState = state.slice(0);
-		
-		newState.splice(action.index, 1);
-
-		return newState;
+		return state.delete(action.index);
 	}
 	default:
 		return state;

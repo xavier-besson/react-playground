@@ -1,32 +1,21 @@
 import React from 'react';
-import Default from 'components/ui/default';
+import List from 'components/ui/list';
 
 /**
- * @class Button
- * @extends Default
+ * @class LearnLifeCycleHumansControls
+ * @extends React.Component
  */
-class Button extends Default {
+class LearnLifeCycleHumansControls extends React.Component {
 	
 	/**
 	 * Range of validators that can be used to make sure the data you receive is valid
 	 * @type {Object}
 	 */
 	static propTypes = {
-		...Default.propTypes,
-		type: React.PropTypes.oneOf(['button', 'submit', 'reset']),
-		small: React.PropTypes.bool,
+		addLog: React.PropTypes.func.isRequired,
+		killHuman: React.PropTypes.func.isRequired,
 	}
-
-	/**
-	 * Default values for props property
-	 * @type {Object}
-	 */
-	static defaultProps = {
-		...Default.defaultProps,
-		type: 'button',
-		small: false,
-	}
-	
+			
 	/**
 	 * React method.
 	 * Return a single React element.
@@ -38,24 +27,16 @@ class Button extends Default {
 	 * @return {Mixed}  A representation of a native DOM component
 	 */
 	render() {
-		const {
-			children,
-			className,
-			small,
-			...other
-		} = this.props;
-		
-		const finalClassName = `button ${className || ''} ${small ? 'small' : ''}`.trim();
+		const actions = [
+			
+		];
 		
 		return (
-			<button
-				className={finalClassName}
-				{...other}
-			>
-				{children}
-			</button>
+			<List
+				items={actions}
+			/>
 		);
 	}
 }
 
-export default Button;
+export default LearnLifeCycleHumansControls;

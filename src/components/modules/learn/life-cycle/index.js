@@ -9,6 +9,7 @@ import GridCol from 'components/ui/grid/col';
 
 import LearnLifeCycleLogsContainer from 'containers/learn/life-cycle/logs';
 import LearnLifeCycleHumansAddFormContainer from 'containers/learn/life-cycle/humans/add-form';
+import LearnLifeCycleHumansControlsContainer from 'containers/learn/life-cycle/humans/controls';
 import LearnLifeCycleHumansListContainer from 'containers/learn/life-cycle/humans/list';
 
 /**
@@ -28,7 +29,6 @@ class LearnLifeCycleContainer extends React.Component {
 	 * @return {Mixed}  A representation of a native DOM component
 	 */
 	render() {
-		console.log('RENDER INDEX');
 		return (
 			<Section>
 				<Quote>
@@ -40,6 +40,7 @@ class LearnLifeCycleContainer extends React.Component {
 					>
 						<Title type={TITLE_TYPE.SUB}>Playground</Title>
 						<LearnLifeCycleHumansAddFormContainer />
+						<LearnLifeCycleHumansControlsContainer />
 						<LearnLifeCycleHumansListContainer />
 					</GridCol>
 					<GridCol

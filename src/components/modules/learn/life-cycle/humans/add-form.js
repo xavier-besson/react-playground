@@ -4,6 +4,7 @@ import FlexItem from 'components/ui/flex/item';
 import Button from 'components/ui/button';
 import FormContainer from 'components/ui/form/container';
 import Textbox from 'components/ui/form/textbox';
+import Immutable from 'immutable';
 
 /**
  * @class LearnLifeCycleHumansAddForm
@@ -26,7 +27,7 @@ class LearnLifeCycleHumansAddForm extends React.Component {
 	 * @return {void}
 	 */
 	onSubmit(formData) {
-		this.props.onSave(formData);
+		this.props.onSave(Immutable.Map(formData));
 	}
 	
 	/**

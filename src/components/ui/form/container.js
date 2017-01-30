@@ -1,5 +1,6 @@
 import React from 'react';
 import Default from 'components/ui/default';
+import Immutable from 'immutable';
 
 /**
  * @class FormContainer
@@ -38,7 +39,7 @@ class FormContainer extends Default {
 	 * All form data
 	 * @type {Object}
 	 */
-	formData = {};
+	formData = Immutable.Map();
 	
 	/**
 	 * Return the context object for the component's children
@@ -54,12 +55,14 @@ class FormContainer extends Default {
 	/**
 	 * Update a value of the form in the data source
 	 * @method updateFormData
-	 * @param {String} key   Key of the data to set the value
+	 * @param {String|Array} key   Key of the data to set the value
 	 * @param {Mixed}  value Value to set
 	 * @return {void}
 	 */
 	updateFormData(key, value) {
-		this.formData[key] = value;
+		const finalKey = Array.isArray(key) ? key : [key];
+
+		this.formData = this.formData.setIn(finalKey, value);
 	}
 	
 	/**

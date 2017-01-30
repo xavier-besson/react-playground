@@ -1,5 +1,7 @@
 import React from 'react';
 import Button from 'components/ui/button';
+import Bold from 'components/ui/bold';
+import List from 'components/ui/list';
 
 /**
  * @class LearnLifeCycleHumansItem
@@ -13,6 +15,7 @@ class LearnLifeCycleHumansItem extends React.Component {
 	 */
 	state = {
 		age: 0,
+		size: 0,
 	};
 	
 	/**
@@ -24,7 +27,7 @@ class LearnLifeCycleHumansItem extends React.Component {
 		name: React.PropTypes.string.isRequired,
 		friendsNumber: React.PropTypes.number.isRequired,
 		addLog: React.PropTypes.func.isRequired,
-		onKill: React.PropTypes.func.isRequired,
+		killHuman: React.PropTypes.func.isRequired,
 	}
 	
 	/**
@@ -37,6 +40,9 @@ class LearnLifeCycleHumansItem extends React.Component {
 	 */
 	componentWillMount() {
 		this.addLog('componentWillMount (birth start)');
+		this.setState({
+			size: Math.floor(Math.random() * (58 - 40 + 1)) + 40,
+		});
 	}
 	
 	/**
@@ -49,6 +55,7 @@ class LearnLifeCycleHumansItem extends React.Component {
 	 * @return {void}
 	 */
 	componentDidMount() {
+		this.addLog('render (birth in progress)');
 		this.addLog('componentDidMount (birth done)');
 	}
 	
@@ -93,6 +100,7 @@ class LearnLifeCycleHumansItem extends React.Component {
 	 * @return {void}
 	 */
 	componentDidUpdate(prevProps, prevState) {
+		this.addLog('render (edition in progress)');
 		this.addLog('componentDidUpdate (gain information/skill)');
 	}
 	
@@ -125,9 +133,13 @@ class LearnLifeCycleHumansItem extends React.Component {
 	 */
 	happyBirthday() {
 		this.addLog('');
-		this.addLog('this.setState is executed');
+		this.addLog('this.setState is executed ("age" and "size" are internal state)');
+		const newAge = this.state.age + 1;
+		const newSize = this.state.size + ((newAge < 20 && this.state.size < 215) ? (Math.floor(Math.random() * (11 - 4 + 1)) + 4) : 0);
+
 		this.setState({
-			age: this.state.age + 1,
+			age: newAge,
+			size: newSize,
 		});
 	}
 	
@@ -148,7 +160,17 @@ class LearnLifeCycleHumansItem extends React.Component {
 		
 		const {
 			age,
+			size,
 		} = this.state;
+		
+		const properties = [
+			{
+				content: `Age: ${age}`,
+			},
+			{
+				content: `Size: ${size}cm`,
+			},
+		];
 				
 		return (
 			<div
@@ -159,19 +181,24 @@ class LearnLifeCycleHumansItem extends React.Component {
 					marginBottom: '15px',
 				}}
 			>
-				{name}
-				<br />
-				Age: {age}
-				<br />
+				<Bold>{name}</Bold>
+				<List
+					items={properties}
+				/>
 				<Button
+					small
 					onClick={::this.happyBirthday}
 				>
 					Celebrate my birthday
 				</Button>
 				<Button
-					onClick={this.props.onKill.bind(this.props.id)}
+					small
+					onClick={this.props.killHuman.bind(this.props.id)}
+					style={{
+						marginLeft: '10px',
+					}}
 				>
-					Kill him
+					Kill me
 				</Button>
 			</div>
 		);

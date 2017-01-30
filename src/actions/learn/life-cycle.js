@@ -3,12 +3,12 @@ export const addLog = (content) => ({
 	content: content,
 });
 
-export const emptyLog = (content) => ({
-	type: 'EMPTY_LOG',
+export const emptyLogs = (content) => ({
+	type: 'EMPTY_LOGS',
 });
 
 export const addHuman = (props) => {
-	if (props.name !== '') {
+	if (props.get('name', '') !== '') {
 		return {
 			type: 'ADD_HUMAN',
 			props: props,

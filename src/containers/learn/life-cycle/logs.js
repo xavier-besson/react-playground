@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import {emptyLog} from 'actions/learn/life-cycle';
+import {emptyLogs} from 'actions/learn/life-cycle';
 import LearnLifeCycleLogs from 'components/modules/learn/life-cycle/logs';
 
 // Store state to props
@@ -9,8 +9,8 @@ const mapStateToProps = (state, ownProps) => ({
 
 // Store actions to props
 const mapDispatchToProps = (dispatch, ownProps) => ({
-	emptyLog: () => {
-		dispatch(emptyLog());
+	emptyLogs: () => {
+		dispatch(emptyLogs());
 	},
 });
 

@@ -12,7 +12,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 	addLog: (content) => {
 		dispatch(addLog(content));
 	},
-	onKill: (index) => {
+	killHuman: (index) => {
 		dispatch(killHuman(index));
 	},
 });
