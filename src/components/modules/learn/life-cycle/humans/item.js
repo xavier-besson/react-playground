@@ -1,13 +1,21 @@
 import React from 'react';
+import Immutable from 'immutable';
 import Button from 'components/ui/button';
 import Bold from 'components/ui/bold';
 import List from 'components/ui/list';
+import ProxyAnimation, {ANIMATION_TYPE} from 'components/ui/animations/proxy';
 
 /**
  * @class LearnLifeCycleHumansItem
  * @extends React.Component
  */
 class LearnLifeCycleHumansItem extends React.Component {
+	
+	/**
+	 * Animation DOM node
+	 * @type {Object}
+	 */
+	animationDomNode = null;
 	
 	/**
 	 * Default state of the component
@@ -25,10 +33,19 @@ class LearnLifeCycleHumansItem extends React.Component {
 	static propTypes = {
 		id: React.PropTypes.number.isRequired,
 		name: React.PropTypes.string.isRequired,
+		superpowers: React.PropTypes.instanceOf(Immutable.List),
 		friendsNumber: React.PropTypes.number.isRequired,
 		addLog: React.PropTypes.func.isRequired,
-		killHuman: React.PropTypes.func.isRequired,
+		killMe: React.PropTypes.func.isRequired,
 	}
+	
+	/**
+	 * Default values for props property
+	 * @type {Object}
+	 */
+	static defaultProps = {
+		superpowers: Immutable.List(),
+	};
 	
 	/**
 	 * React method.
@@ -144,6 +161,20 @@ class LearnLifeCycleHumansItem extends React.Component {
 	}
 	
 	/**
+	 * Fired when the button "Kill me" is clicked
+	 * @method onKillMeClick
+	 * @param {Object} e The event Object
+	 * @return {void}
+	 */
+	onKillMeClick(e) {
+		this.animationDomNode.updateAndRun(ANIMATION_TYPE.BOUNCE_OUT, {
+			onFinish: () => {
+				this.props.killMe();
+			},
+		});
+	}
+	
+	/**
 	 * React method.
 	 * Return a single React element.
 	 * This element can be either a representation of a native DOM component,
@@ -156,13 +187,14 @@ class LearnLifeCycleHumansItem extends React.Component {
 	render() {
 		const {
 			name,
+			superpowers,
 		} = this.props;
 		
 		const {
 			age,
 			size,
 		} = this.state;
-		
+				
 		const properties = [
 			{
 				content: `Age: ${age}`,
@@ -171,14 +203,26 @@ class LearnLifeCycleHumansItem extends React.Component {
 				content: `Size: ${size}cm`,
 			},
 		];
+		
+		if (superpowers.size > 0) {
+			properties.push({
+				content: `Super powers: ${superpowers.join(' / ')}`,
+			});
+		}
 				
 		return (
-			<div
+			<ProxyAnimation
+				type={ANIMATION_TYPE.BOUNCE_IN}
+				ref={(domNode) => {
+					this.animationDomNode = domNode;
+				}}
+				wrapper="div"
 				style={{
 					border: 'solid 1px #ccc',
 					padding: '20px',
 					borderRadius: '5px',
 					marginBottom: '15px',
+					backgroundColor: '#fff',
 				}}
 			>
 				<Bold>{name}</Bold>
@@ -193,14 +237,14 @@ class LearnLifeCycleHumansItem extends React.Component {
 				</Button>
 				<Button
 					small
-					onClick={this.props.killHuman.bind(this.props.id)}
+					onClick={::this.onKillMeClick}
 					style={{
 						marginLeft: '10px',
 					}}
 				>
 					Kill me
 				</Button>
-			</div>
+			</ProxyAnimation>
 		);
 	}
 }

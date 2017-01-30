@@ -6,8 +6,8 @@ import Default from 'components/ui/default';
  * @type {Object}
  */
 export const LIST_TYPE = {
-	default: 'ul',
-	ordered: 'ol',
+	DEFAULT: 'ul',
+	ORDERED: 'ol',
 };
 
 /**
@@ -22,7 +22,7 @@ class List extends Default {
 	 */
 	static propTypes = {
 		...Default.propTypes,
-		type: React.PropTypes.oneOf(Object.keys(LIST_TYPE)),
+		type: React.PropTypes.oneOf(Object.values(LIST_TYPE)),
 		items: React.PropTypes.arrayOf(React.PropTypes.shape({
 			content: React.PropTypes.node,
 			props: React.PropTypes.object,
@@ -35,7 +35,7 @@ class List extends Default {
 	 */
 	static defaultProps = {
 		...Default.defaultProps,
-		type: 'default',
+		type: LIST_TYPE.DEFAULT,
 		items: [],
 	}
 	
@@ -94,7 +94,7 @@ class List extends Default {
 			...other
 		} = this.props;
 		
-		return React.createElement(LIST_TYPE[type], other, this.renderItems());
+		return React.createElement(type, other, this.renderItems());
 	}
 }
 

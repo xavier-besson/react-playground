@@ -23,5 +23,19 @@ export const addHuman = (props) => {
 
 export const killHuman = (index) => ({
 	type: 'KILL_HUMAN',
-	props: index,
+	index: index,
 });
+
+export const giveRandomSuperPower = () => (dispatch, getState) => {
+		
+	const {
+			humans,
+		} = getState();
+		
+	const index = Math.floor(Math.random() * humans.size);
+
+	dispatch({
+		type: 'GIVE_RANDOM_SUPERPOWER_TO_HUMAN',
+		index: index,
+	});
+};

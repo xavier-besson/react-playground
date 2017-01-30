@@ -26,19 +26,19 @@ class LayoutManager {
 	 * Singleton forger
 	 * @method forge
 	 * @param {Element}  DOMNode  The DOM node associate to the layout
-	 * @return {LayoutManager}
+	 * @return {LayoutManager} The current instance
 	 */
 	static forge(DOMNode) {
-		return LayoutManager.instance === null ?  LayoutManager.instance = new LayoutManager(DOMNode) : LayoutManager.instance;
+		return LayoutManager.instance === null ? LayoutManager.instance = new LayoutManager(DOMNode) : LayoutManager.instance;
 	}
 	
 	/**
 	 * Return the instance of the manager
 	 * @method getInstance
-	 * @return {LayoutManager}
+	 * @return {LayoutManager} The current instance
 	 */
 	static getInstance() {
-		return LayoutManager.instance; 
+		return LayoutManager.instance;
 	}
 	
 	/**
@@ -54,7 +54,7 @@ class LayoutManager {
 	
 	/**
 	 * Set the currentWindow property
-	 * Permit to work with the good window reference, 
+	 * Permit to work with the good window reference,
 	 * in the case the component is injected in a window from another window.
 	 * @method setCurrentWindow
 	 * @param {Element}  DOMNode   The DOM node used as starting point to search it associated window
@@ -68,17 +68,17 @@ class LayoutManager {
 	
 	/**
 	* Find the window of the root DOM node.
-	* Permit to work with the good window reference, 
+	* Permit to work with the good window reference,
 	* in the case the component is injected in a window from another window.
 	* @method getDOMNodeWindow
 	* @param {Element}  DOMNode  The DOM node used as starting point to search it associated window
 	* @return {Element} The associate window
 	*/
-	getDOMNodeWindow(DOMNode) {	
+	getDOMNodeWindow(DOMNode) {
 		return ((DOMNode.ownerDocument.defaultView) ?
 		DOMNode.ownerDocument.defaultView :
 		DOMNode.ownerDocument.parentWindow) || window;
-	};
+	}
 	
 	/**
 	 * Inject meta properties in the page.
@@ -87,11 +87,11 @@ class LayoutManager {
 	 * @return {LayoutManager}  The current instance, permit to maintain chainability
 	 */
 	setMetaInDom(meta) {
-		if(this.currentWindow !== null) {
+		if (this.currentWindow !== null) {
 			const metaDescriptionDomNode = this.currentWindow.document.querySelector('meta[name=description]');
 			
 			this.currentWindow.document.title = meta.title;
-			if(metaDescriptionDomNode) {
+			if (metaDescriptionDomNode) {
 				metaDescriptionDomNode.content = meta.description;
 			}
 		}
@@ -106,14 +106,14 @@ class LayoutManager {
 	 * @return {LayoutManager}  The current instance, permit to maintain chainability
 	 */
 	injectCssFiles(files = []) {
-		if(this.currentWindow !== null && files.length) {
+		if (this.currentWindow !== null && files.length) {
 			const doc = this.currentWindow.document;
 			const head = doc.head;
-			let loadedFiles = this.loadedCSSFiles[this.currentWindow] || [];
+			const loadedFiles = this.loadedCSSFiles[this.currentWindow] || [];
 
 			files.forEach((file) => {
-				if(loadedFiles.indexOf(file.href) === -1) {
-					let link = doc.createElement('link');
+				if (loadedFiles.indexOf(file.href) === -1) {
+					const link = doc.createElement('link');
 					
 					link.type = 'text/css';
 					link.rel = 'stylesheet';
@@ -125,6 +125,26 @@ class LayoutManager {
 			
 			this.loadedCSSFiles[this.currentWindow] = loadedFiles;
 		}
+		
+		return this;
+	}
+	
+	/**
+	 * Inject a style tag in the head of the document
+	 * @method injectStyleTag
+	 * @param {String} content The style content
+	 * @return {LayoutManager}  The current instance, permit to maintain chainability
+	 */
+	injectStyleTag(content) {
+		const style = document.createElement('style');
+
+		style.type = 'text/css';
+		style.innerHTML = content;
+		
+		const doc = this.currentWindow.document;
+		const head = doc.head;
+
+		head.appendChild(style);
 		
 		return this;
 	}

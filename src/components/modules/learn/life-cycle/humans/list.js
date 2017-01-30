@@ -41,12 +41,15 @@ class LearnLifeCycleHumansList extends React.Component {
 	renderHuman(human, index) {
 		return (
 			<LearnLifeCycleHumansItem
-				{...human.toJS()}
+				id={index}
+				name={human.get('name')}
+				superpowers={human.get('superpowers')}
 				key={index}
 				addLog={this.props.addLog}
-				killHuman={this.props.killHuman}
-				id={index}
-				friendsNumber={this.props.humans.length - 1}
+				killMe={() => {
+					this.props.killHuman(index);
+				}}
+				friendsNumber={this.props.humans.size - 1}
 			/>
 		);
 	}

@@ -1,5 +1,6 @@
 import React from 'react';
 import List from 'components/ui/list';
+import Button from 'components/ui/button';
 
 /**
  * @class LearnLifeCycleHumansControls
@@ -12,8 +13,8 @@ class LearnLifeCycleHumansControls extends React.Component {
 	 * @type {Object}
 	 */
 	static propTypes = {
-		addLog: React.PropTypes.func.isRequired,
-		killHuman: React.PropTypes.func.isRequired,
+		giveRandomSuperPower: React.PropTypes.func.isRequired,
+		visible: React.PropTypes.bool.isRequired,
 	}
 			
 	/**
@@ -28,14 +29,26 @@ class LearnLifeCycleHumansControls extends React.Component {
 	 */
 	render() {
 		const actions = [
-			
+			{
+				content: (
+					<Button
+						onClick={this.props.giveRandomSuperPower}
+						small
+					>
+						Give a random SuperPower to a random human
+					</Button>
+				),
+			},
 		];
 		
-		return (
+		const content = this.props.visible ? (
 			<List
+				className="actions"
 				items={actions}
 			/>
-		);
+		) : null;
+		
+		return content;
 	}
 }
 
