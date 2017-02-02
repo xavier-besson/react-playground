@@ -21,10 +21,11 @@ class LearnLifeCycleHumansItem extends React.Component {
 	 * Default state of the component
 	 * @type {Object}
 	 */
-	state = {
-		age: 0,
-		size: 0,
-	};
+	// state = {
+	// 	age: 0,
+	// 	size: 0,
+	// 	sportive: 0,
+	// };
 	
 	/**
 	 * Range of validators that can be used to make sure the data you receive is valid
@@ -37,6 +38,7 @@ class LearnLifeCycleHumansItem extends React.Component {
 		friendsNumber: React.PropTypes.number.isRequired,
 		addLog: React.PropTypes.func.isRequired,
 		killMe: React.PropTypes.func.isRequired,
+		updateProperties: React.PropTypes.func.isRequired,
 	}
 	
 	/**
@@ -57,9 +59,9 @@ class LearnLifeCycleHumansItem extends React.Component {
 	 */
 	componentWillMount() {
 		this.addLog('componentWillMount (birth start)');
-		this.setState({
-			size: Math.floor(Math.random() * (58 - 40 + 1)) + 40,
-		});
+		// this.setState({
+		// 	size: Math.floor(Math.random() * (58 - 40 + 1)) + 40,
+		// });
 	}
 	
 	/**
@@ -143,6 +145,10 @@ class LearnLifeCycleHumansItem extends React.Component {
 		this.props.addLog(`Human "${this.props.name}": ${content}`);
 	}
 	
+	updateProperties(properties) {
+		this.props.updateProperties(properties);
+	}
+	
 	/**
 	 * Celebrate the birthday
 	 * @method happyBirthday
@@ -150,14 +156,19 @@ class LearnLifeCycleHumansItem extends React.Component {
 	 */
 	happyBirthday() {
 		this.addLog('');
-		this.addLog('this.setState is executed ("age" and "size" are internal state)');
-		const newAge = this.state.age + 1;
-		const newSize = this.state.size + ((newAge < 20 && this.state.size < 215) ? (Math.floor(Math.random() * (11 - 4 + 1)) + 4) : 0);
-
-		this.setState({
+		// this.addLog('this.setState is executed ("age" and "size" are internal state)');
+		const newAge = this.props.age + 1;
+		const newSize = this.props.size + ((newAge < 20 && this.props.size < 215) ? (Math.floor(Math.random() * (11 - 4 + 1)) + 4) : 0);
+		//
+		// this.setState({
+		// 	age: newAge,
+		// 	size: newSize,
+		// });
+		
+		this.updateProperties(Immutable.Map({
 			age: newAge,
 			size: newSize,
-		});
+		}));
 	}
 	
 	/**
@@ -167,10 +178,8 @@ class LearnLifeCycleHumansItem extends React.Component {
 	 * @return {void}
 	 */
 	onKillMeClick(e) {
-		this.animationDomNode.updateAndRun(ANIMATION_TYPE.BOUNCE_OUT, {
-			onFinish: () => {
-				this.props.killMe();
-			},
+		this.animationDomNode.updateAndRun(ANIMATION_TYPE.BOUNCE_OUT).then(() => {
+			this.props.killMe();
 		});
 	}
 	
@@ -193,6 +202,7 @@ class LearnLifeCycleHumansItem extends React.Component {
 		const {
 			age,
 			size,
+			sportive,
 		} = this.state;
 				
 		const properties = [
@@ -201,6 +211,9 @@ class LearnLifeCycleHumansItem extends React.Component {
 			},
 			{
 				content: `Size: ${size}cm`,
+			},
+			{
+				content: `Sportive: ${sportive}`,
 			},
 		];
 		
@@ -234,6 +247,36 @@ class LearnLifeCycleHumansItem extends React.Component {
 					onClick={::this.happyBirthday}
 				>
 					Celebrate my birthday
+				</Button>
+				<Button
+					small
+					onClick={() => {
+						this.animationDomNode.updateAndRun(ANIMATION_TYPE.PULSE).then(() => {
+							this.setState({
+								sportive: this.state.sportive - 1,
+							});
+						});
+					}}
+					style={{
+						marginLeft: '10px',
+					}}
+				>
+					Eat a burger
+				</Button>
+				<Button
+					small
+					onClick={() => {
+						this.animationDomNode.updateAndRun(ANIMATION_TYPE.BOUNCE).then(() => {
+							this.setState({
+								sportive: this.state.sportive + 1,
+							});
+						});
+					}}
+					style={{
+						marginLeft: '10px',
+					}}
+				>
+					Make me jump
 				</Button>
 				<Button
 					small

@@ -29,7 +29,8 @@ class LayoutManager {
 	 * @return {LayoutManager} The current instance
 	 */
 	static forge(DOMNode) {
-		return LayoutManager.instance === null ? LayoutManager.instance = new LayoutManager(DOMNode) : LayoutManager.instance;
+		LayoutManager.instance === null && (LayoutManager.instance = new LayoutManager(DOMNode));
+		return LayoutManager.instance;
 	}
 	
 	/**

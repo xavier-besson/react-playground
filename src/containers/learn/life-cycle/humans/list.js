@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import {addLog, killHuman} from 'actions/learn/life-cycle';
+import {addLog, killHuman, updateHumanProperties} from 'actions/learn/life-cycle';
 import LearnLifeCycleHumansList from 'components/modules/learn/life-cycle/humans/list';
 
 // Store state to props
@@ -14,6 +14,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 	},
 	killHuman: (index) => {
 		dispatch(killHuman(index));
+	},
+	updateHumanProperties: (index, properties) => {
+		dispatch(updateHumanProperties(index, properties));
 	},
 });
 

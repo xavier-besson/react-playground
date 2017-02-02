@@ -1,26 +1,14 @@
 import React from 'react';
-import Default from 'components/ui/default';
+import BaseAnimation from 'components/ui/animations/index';
 import LayoutManager from 'utils/layout-manager.js';
 import * as Uid from 'utils/uid';
 
 /**
  * https://github.com/daneden/animate.css/tree/master/source
  * @class DefaultAnimation
- * @extends Default
+ * @extends BaseAnimation
  */
-class DefaultAnimation extends Default {
-	
-	/**
-	 * Animation name
-	 * @type {String}
-	 */
-	name = null;
-	
-	/**
-	 * Animation timeout, avoid repetition
-	 * @type {Number}
-	 */
-	animationTimeout = null;
+class DefaultAnimation extends BaseAnimation {
 	
 	/**
 	 * Instance of the LayoutManager
@@ -28,18 +16,12 @@ class DefaultAnimation extends Default {
 	 * @type {LayoutManager}
 	 */
 	layoutManager = null;
-	
+			
 	/**
-	 * The class identifier
+	 * Animation identifier
 	 * @type {String}
 	 */
-	classIdentifier = null;
-	
-	/**
-	 * DOM node reference
-	 * @type {Element}
-	 */
-	domNode = null;
+	static identifier = 'default';
 	
 	/**
 	 * Cached class ientifiers
@@ -52,7 +34,7 @@ class DefaultAnimation extends Default {
 	 * @type {Object}
 	 */
 	static propTypes = {
-		...Default.propTypes,
+		...BaseAnimation.propTypes,
 		wrapper: React.PropTypes.string,
 		onFinish: React.PropTypes.func,
 	}
@@ -62,9 +44,21 @@ class DefaultAnimation extends Default {
 	 * @type {Object}
 	 */
 	static defaultProps = {
-		...Default.defaultProps,
+		...BaseAnimation.defaultProps,
 		wrapper: 'span',
 		onFinish: null,
+	}
+	
+	/**
+	 * Initialize the animation component, inject the CSS if needed
+	 * @method init
+	 * @return {void}
+	 */
+	static init() {
+		if (!this.classIdentifiers[this.identifier]) {
+			this.classIdentifiers[this.identifier] = Uid.get('animation_');
+			LayoutManager.getInstance().injectStyleTag(this.getStyle(this.classIdentifiers[this.identifier]));
+		}
 	}
 	
 	/**
@@ -76,16 +70,7 @@ class DefaultAnimation extends Default {
 	 * @return {void}
 	 */
 	componentWillMount() {
-		if (!this.constructor.classIdentifiers[this.name]) {
-			this.constructor.classIdentifiers[this.name] = Uid.get('animation_');
-			this.classIdentifier = this.constructor.classIdentifiers[this.name];
-			this.layoutManager = LayoutManager.getInstance();
-			this.layoutManager.injectStyleTag(this.getStyle());
-		}
-		else {
-			this.classIdentifier = this.constructor.classIdentifiers[this.name];
-		}
-		
+		this.constructor.init();
 	}
 	
 	/**
@@ -114,39 +99,11 @@ class DefaultAnimation extends Default {
 	}
 	
 	/**
-	 * Add a callback on animationend
-	 * @method addAnimationEndEvent
-	 * @param {Function} callback The callback to executed
-	 * @return {void}
-	 */
-	addAnimationEndEvent(callback) {
-		this.domNode.addEventListener('webkitAnimationEnd', callback, false);
-		this.domNode.addEventListener('animationend', callback, false);
-		this.domNode.addEventListener('oanimationend', callback, false);
-		this.domNode.addEventListener('mozAnimationEnd', callback, false);
-		this.domNode.addEventListener('MSAnimationEnd', callback, false);
-	}
-	
-	/**
-	 * Remove the callback on animationend
-	 * @method removeAnimationEndEvent
-	 * @param {Function} callback The callback to executed
-	 * @return {void}
-	 */
-	removeAnimationEndEvent(callback) {
-		this.domNode.removeEventListener('webkitAnimationEnd', callback, false);
-		this.domNode.removeEventListener('animationend', callback, false);
-		this.domNode.removeEventListener('oanimationend', callback, false);
-		this.domNode.removeEventListener('mozAnimationEnd', callback, false);
-		this.domNode.removeEventListener('MSAnimationEnd', callback, false);
-	}
-	
-	/**
 	 * Return the style content
 	 * @method getStyle
 	 * @return {String} The style content
 	 */
-	getStyle() {
+	static getStyle() {
 		return '';
 	}
 	
@@ -159,6 +116,8 @@ class DefaultAnimation extends Default {
 		const {
 			onFinish,
 		} = this.props;
+		
+		this.domNode.classList.remove(this.constructor.classIdentifiers[this.constructor.identifier]);
 						
 		if (onFinish !== null) {
 			onFinish();
@@ -167,23 +126,22 @@ class DefaultAnimation extends Default {
 	
 	/**
 	 * External API function to run the animation
-	 * @method runAnimation
+	 * @method run
 	 * @return {Promise} A promise
 	 */
-	runAnimation() {
+	run() {
 		return new Promise((resolve, reject) => {
 			clearTimeout(this.animationTimeout);
 			this.animationTimeout = setTimeout(() => {
-				this.domNode.classList.remove(this.classIdentifier);
-				setTimeout(() => {
-					const animatedEnd = () => {
-						resolve();
-						this.removeAnimationEndEvent(animatedEnd);
-					};
+				const className = this.constructor.classIdentifiers[this.constructor.identifier];
+				const animatedEnd = () => {
+					this.removeAnimationEndEvent(animatedEnd);
+					this.domNode.classList.remove(className);
+					resolve();
+				};
 
-					this.addAnimationEndEvent(animatedEnd);
-					this.domNode.classList.add(this.classIdentifier);
-				}, 50);
+				this.addAnimationEndEvent(animatedEnd);
+				this.domNode.classList.add(className);
 			});
 		});
 	}
@@ -207,7 +165,7 @@ class DefaultAnimation extends Default {
 			...other
 		} = this.props;
 		
-		const finalClassName = `${className} ${this.classIdentifier}`;
+		const finalClassName = `${className} ${this.constructor.classIdentifiers[this.constructor.identifier]}`;
 		const props = {
 			...other,
 			ref: (domNode) => {

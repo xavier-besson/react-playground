@@ -16,6 +16,7 @@ class LearnLifeCycleHumansList extends React.Component {
 		humans: React.PropTypes.instanceOf(Immutable.List),
 		addLog: React.PropTypes.func.isRequired,
 		killHuman: React.PropTypes.func.isRequired,
+		updateHumanProperties: React.PropTypes.func.isRequired,
 	}
 	
 	/**
@@ -48,6 +49,9 @@ class LearnLifeCycleHumansList extends React.Component {
 				addLog={this.props.addLog}
 				killMe={() => {
 					this.props.killHuman(index);
+				}}
+				updateProperties={(key, value) => {
+					this.props.updateHumanProperties(index, properties);
 				}}
 				friendsNumber={this.props.humans.size - 1}
 			/>

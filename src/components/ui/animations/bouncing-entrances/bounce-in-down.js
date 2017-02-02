@@ -8,19 +8,20 @@ import DefaultAnimation from 'components/ui/animations/default';
 class BounceInDownAnimation extends DefaultAnimation {
 		
 	/**
-	 * Animation name
+	 * Animation identifier
 	 * @type {String}
 	 */
-	name = 'bounceInDown';
+	static identifier = 'bounceInDown';
 		
 	/**
 	 * Return the style content
 	 * @method getStyle
+	 * @param {String} classIdentifier Associate class name
 	 * @return {String} The style content
 	 */
-	getStyle() {
+	static getStyle(classIdentifier) {
 		return `
-		@keyframes ${this.classIdentifier} {
+		@keyframes ${classIdentifier} {
 			from, 60%, 75%, 90%, to {
 				animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
 			}
@@ -48,8 +49,8 @@ class BounceInDownAnimation extends DefaultAnimation {
 			}
 		}
 
-		.${this.classIdentifier} {
-			animation-name: ${this.classIdentifier};
+		.${classIdentifier} {
+			animation-name: ${classIdentifier};
 			animation-duration: 1s;
 			animation-fill-mode: both;
 		}

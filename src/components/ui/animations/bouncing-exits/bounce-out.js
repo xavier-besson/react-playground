@@ -8,19 +8,20 @@ import DefaultAnimation from 'components/ui/animations/default';
 class BounceOutAnimation extends DefaultAnimation {
 		
 	/**
-	 * Animation name
+	 * Animation identifier
 	 * @type {String}
 	 */
-	name = 'bounceOut';
+	static identifier = 'bounceOut';
 	
 	/**
 	 * Return the style content
 	 * @method getStyle
+	 * @param {String} classIdentifier Associate class name
 	 * @return {String} The style content
 	 */
-	getStyle() {
+	static getStyle(classIdentifier) {
 		return `
-		@keyframes ${this.classIdentifier} {
+		@keyframes ${classIdentifier} {
 			20% {
 				transform: scale3d(.9, .9, .9);
 			}
@@ -36,8 +37,8 @@ class BounceOutAnimation extends DefaultAnimation {
 			}
 		}
 
-		.${this.classIdentifier} {
-			animation-name: ${this.classIdentifier};
+		.${classIdentifier} {
+			animation-name: ${classIdentifier};
 			animation-duration: 1s;
 			animation-fill-mode: both;
 		}

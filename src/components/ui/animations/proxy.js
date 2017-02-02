@@ -1,6 +1,9 @@
 import React from 'react';
-import Default from 'components/ui/default';
+import ReactDOM from 'react-dom';
+import BaseAnimation from 'components/ui/animations/index';
 
+import BounceAnimation from 'components/ui/animations/attention-seekers/bounce';
+import PulseAnimation from 'components/ui/animations/attention-seekers/pulse';
 import BounceInDownAnimation from 'components/ui/animations/bouncing-entrances/bounce-in-down';
 import BounceInAnimation from 'components/ui/animations/bouncing-entrances/bounce-in';
 import BounceOutAnimation from 'components/ui/animations/bouncing-exits/bounce-out';
@@ -10,6 +13,8 @@ import BounceOutAnimation from 'components/ui/animations/bouncing-exits/bounce-o
  * @type {Object}
  */
 export const ANIMATION_TYPE = {
+	BOUNCE: BounceAnimation,
+	PULSE: PulseAnimation,
 	BOUNCE_IN_DOWN: BounceInDownAnimation,
 	BOUNCE_IN: BounceInAnimation,
 	BOUNCE_OUT: BounceOutAnimation,
@@ -18,74 +23,60 @@ export const ANIMATION_TYPE = {
 /**
  * https://github.com/daneden/animate.css/tree/master/source
  * @class ProxyAnimation
- * @extends Default
+ * @extends BaseAnimation
  */
-class ProxyAnimation extends Default {
+class ProxyAnimation extends BaseAnimation {
 	
-	state = {
-		type: null,
-		props: {},
-	};
-	
+	/**
+	 * React element reference
+	 * @type {Element}
+	 */
+	reactElement = null;
+		
 	/**
 	 * Range of validators that can be used to make sure the data you receive is valid
 	 * @type {Object}
 	 */
 	static propTypes = {
-		...Default.propTypes,
+		...BaseAnimation.propTypes,
 		type: React.PropTypes.oneOf(Object.values(ANIMATION_TYPE)).isRequired,
 	}
-
-	/**
-	 * Default values for props property
-	 * @type {Object}
-	 */
-	static defaultProps = {
-		...Default.defaultProps,
-	}
-	
-	/**
-	 * React method.
-	 * Invoked immediately before mounting occurs.
-	 * It is called before render(), therefore setting state in this method will not trigger a re-rendering.
-	 * Avoid introducing any side-effects or subscriptions in this method.
-	 * @method componentWillMount
-	 * @return {void}
-	 */
-	componentWillMount() {
-		this.setState({
-			type: this.props.type,
-		});
-	}
-	
-	/**
-	 * React method.
-	 * Invoked before a mounted component receives new props.
-	 * If you need to update the state in response to prop changes (for example, to reset it),
-	  * you may compare this.props and nextProps and perform state transitions using this.setState() in this method.
-	 * @method componentWillReceiveProps
-	 * @param {Object} nextProps The next properties of the component
-	 * @param {Object} nextState The next state of the component
-	 * @return {void}
-	 */
-	componentWillReceiveProps(nextProps, nextState) {
-		this.setState({
-			type: nextProps.type,
-		});
-	}
-	
+			
 	/**
 	 * Update the type of animation and the associate properties
 	 * @method updateAndRun
 	 * @param {Object} type The type of animation
-	 * @param {Object} props Component properties
 	 * @return {void}
 	 */
-	updateAndRun(type, props = {}) {
-		this.setState({
-			type: type,
-			props: props,
+	updateAndRun(type) {
+		type.init();
+				
+		return new Promise((resolve, reject) => {
+			clearTimeout(this.animationTimeout);
+			this.animationTimeout = setTimeout(() => {
+				const oldClassName = this.props.type.classIdentifiers[this.props.type.identifier];
+				const newClassName = type.classIdentifiers[type.identifier];
+
+				this.domNode.classList.remove(oldClassName);
+				const animatedEnd = () => {
+					this.removeAnimationEndEvent(animatedEnd);
+					this.domNode.classList.remove(newClassName);
+					resolve();
+				};
+				
+				this.addAnimationEndEvent(animatedEnd);
+				this.domNode.classList.add(newClassName);
+			});
 		});
+	}
+	
+	/**
+	 * Run the animation
+	 * @method run
+	 * @return {Promise} A promise
+	 */
+	run() {
+		return this.reactElement.run();
 	}
 	
 	/**
@@ -105,7 +96,15 @@ class ProxyAnimation extends Default {
 			...other
 		} = this.props;
 				
-		return React.createElement(this.state.type, Object.assign(other, this.state.props), children);
+		return React.createElement(type, Object.assign(
+			other,
+			{
+				ref: (element) => {
+					this.reactElement = element;
+					this.domNode = ReactDOM.findDOMNode(element);
+				},
+			}
+		), children);
 	}
 }
 

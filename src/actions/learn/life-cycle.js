@@ -21,6 +21,12 @@ export const addHuman = (props) => {
 	}
 };
 
+export const updateHumanProperties = (index, properties) => ({
+	type: 'UPDATE_HUMAN',
+	index: index,
+	properties: properties,
+});
+
 export const killHuman = (index) => ({
 	type: 'KILL_HUMAN',
 	index: index,

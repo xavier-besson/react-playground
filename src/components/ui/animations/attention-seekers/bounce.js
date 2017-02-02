@@ -2,16 +2,16 @@ import DefaultAnimation from 'components/ui/animations/default';
 
 /**
  * https://github.com/daneden/animate.css/tree/master/source
- * @class BounceInAnimation
+ * @class Bounce
  * @extends DefaultAnimation
  */
-class BounceInAnimation extends DefaultAnimation {
+class Bounce extends DefaultAnimation {
 		
 	/**
 	 * Animation identifier
 	 * @type {String}
 	 */
-	static identifier = 'bounceIn';
+	static identifier = 'bounce';
 	
 	/**
 	 * Return the style content
@@ -22,40 +22,29 @@ class BounceInAnimation extends DefaultAnimation {
 	static getStyle(classIdentifier) {
 		return `
 		@keyframes ${classIdentifier} {
-			from, 20%, 40%, 60%, 80%, to {
+			from, 20%, 53%, 80%, to {
 				animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+				transform: translate3d(0,0,0);
 			}
 
-			0% {
-				opacity: 0;
-				transform: scale3d(.3, .3, .3);
+			40%, 43% {
+				animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+				transform: translate3d(0, -30px, 0);
 			}
 
-			20% {
-				transform: scale3d(1.1, 1.1, 1.1);
+			70% {
+				animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+				transform: translate3d(0, -15px, 0);
 			}
 
-			40% {
-				transform: scale3d(.9, .9, .9);
-			}
-
-			60% {
-				opacity: 1;
-				transform: scale3d(1.03, 1.03, 1.03);
-			}
-
-			80% {
-				transform: scale3d(.97, .97, .97);
-			}
-
-			to {
-				opacity: 1;
-				transform: scale3d(1, 1, 1);
+			90% {
+				transform: translate3d(0,-4px,0);
 			}
 		}
 
 		.${classIdentifier} {
 			animation-name: ${classIdentifier};
+			transform-origin: center bottom;
 			animation-duration: 1s;
 			animation-fill-mode: both;
 		}
@@ -64,4 +53,4 @@ class BounceInAnimation extends DefaultAnimation {
 	
 }
 
-export default BounceInAnimation;
+export default Bounce;

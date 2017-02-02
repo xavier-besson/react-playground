@@ -39,6 +39,9 @@ const human = (state, action) => {
 
 		return state.set('superpowers', state.get('superpowers', Immutable.List()).push(superpower));
 	}
+	case 'UPDATE_HUMAN': {
+		return state.merge(action.key, action.properties);
+	}
 	default:
 		return state;
 	}
@@ -53,6 +56,9 @@ export const humans = (state = Immutable.List(), action) => {
 		return state.delete(action.index);
 	}
 	case 'GIVE_RANDOM_SUPERPOWER_TO_HUMAN': {
+		return state.set(action.index, human(state.get(action.index), action));
+	}
+	case 'UPDATE_HUMAN': {
 		return state.set(action.index, human(state.get(action.index), action));
 	}
 	default:
